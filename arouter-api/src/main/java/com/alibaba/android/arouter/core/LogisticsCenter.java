@@ -148,9 +148,13 @@ public class LogisticsCenter {
 
     /**
      * LogisticsCenter init, load all metas in memory. Demand initialization
+     * init，加载内存中的所有元数据。需求初始化
      */
     public synchronized static void init(Context context, ThreadPoolExecutor tpe) throws HandlerException {
+        // 持有 context 的 Application
         mContext = context;
+        // 上传调用 DefaultPoolExecutor.getInstance() 获得后传入
+        // 简言之就是一个 线程池
         executor = tpe;
 
         try {
