@@ -12,5 +12,6 @@ public class TestModuleActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_module);
+
     }
 }
