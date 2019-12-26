@@ -46,7 +46,7 @@ final class _ARouter {
     private volatile static _ARouter instance = null;
     private volatile static boolean hasInit = false;
     private volatile static ThreadPoolExecutor executor = DefaultPoolExecutor.getInstance();
-    private static Handler mHandler;
+    private static Handler mHandler;// 用于向用户弹吐司/提示
     private static Context mContext;
 
     private static InterceptorService interceptorService;
@@ -56,9 +56,12 @@ final class _ARouter {
 
     protected static synchronized boolean init(Application application) {
         mContext = application;
+        // executor -> Executors : 声明时已初始化  DefaultPoolExecutor.getInstance()
+        // 实例话 activity / providers 等的 map
         LogisticsCenter.init(mContext, executor);
         logger.info(Consts.TAG, "ARouter init success!");
         hasInit = true;
+        // 要刷新UI，handler要用到主线程的looper
         mHandler = new Handler(Looper.getMainLooper());
 
         return true;
@@ -238,6 +241,8 @@ final class _ARouter {
 
     static void afterInit() {
         // Trigger interceptor init, use byName.
+        // 触发拦截器init，使用byName。
+        // 改 Service 目录：arouter/core/InterceptorServiceImpl  所有拦截器都在里面
         interceptorService = (InterceptorService) ARouter.getInstance().build("/arouter/service/interceptor").navigation();
     }
 
@@ -286,6 +291,7 @@ final class _ARouter {
 
             if (debuggable()) {
                 // Show friendly tips for user.
+                // 为用户显示友好的提示
                 runInMainThread(new Runnable() {
                     @Override
                     public void run() {
@@ -407,6 +413,7 @@ final class _ARouter {
 
     /**
      * Be sure execute in main thread.
+     * 确保在主线程中执行
      *
      * @param runnable code
      */

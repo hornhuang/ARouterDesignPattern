@@ -16,13 +16,14 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Executors
+ * 自动义线程池，继承自 Android 线程池
  *
  * @author 正纬 <a href="mailto:zhilong.liu@aliyun.com">Contact me.</a>
  * @version 1.0
  * @since 16/4/28 下午4:07
  */
 public class DefaultPoolExecutor extends ThreadPoolExecutor {
-    //    Thread args
+    // Thread args
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
     private static final int INIT_THREAD_COUNT = CPU_COUNT + 1;
     private static final int MAX_THREAD_COUNT = INIT_THREAD_COUNT;
@@ -31,9 +32,12 @@ public class DefaultPoolExecutor extends ThreadPoolExecutor {
     private static volatile DefaultPoolExecutor instance;
 
     public static DefaultPoolExecutor getInstance() {
+        // 单例
         if (null == instance) {
+            // 锁
             synchronized (DefaultPoolExecutor.class) {
                 if (null == instance) {
+                    // 调用私有初始化方法
                     instance = new DefaultPoolExecutor(
                             INIT_THREAD_COUNT,
                             MAX_THREAD_COUNT,
@@ -48,9 +52,11 @@ public class DefaultPoolExecutor extends ThreadPoolExecutor {
     }
 
     private DefaultPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory) {
+        // 调用父类方法 初始化一个线程池，执行提交的方法
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, new RejectedExecutionHandler() {
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                // 发生错误的话 打印
                 ARouter.logger.error(Consts.TAG, "Task rejected, too many task!");
             }
         });

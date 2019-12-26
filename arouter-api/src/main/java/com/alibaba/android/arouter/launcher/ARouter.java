@@ -24,8 +24,10 @@ public final class ARouter {
     public static final String RAW_URI = "NTeRQWvye18AkPd6G";
     public static final String AUTO_INJECT = "wmHzgD4lOj5o4241";
 
+    // 单例模式
     private volatile static ARouter instance = null;
     private volatile static boolean hasInit = false;
+    // 自带日志打印
     public static ILogger logger;
 
     private ARouter() {
@@ -36,11 +38,14 @@ public final class ARouter {
      */
     public static void init(Application application) {
         if (!hasInit) {
+            // DefaultLogger 开始记录
             logger = _ARouter.logger;
             _ARouter.logger.info(Consts.TAG, "ARouter init start.");
+            // 初始化 _ARouter 单例中的 mContext
             hasInit = _ARouter.init(application);
-
+            // 返回 true 说明初始化成功
             if (hasInit) {
+                // 粗发一个拦截器 使用 Service
                 _ARouter.afterInit();
             }
 
