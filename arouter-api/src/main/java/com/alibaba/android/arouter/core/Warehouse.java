@@ -19,6 +19,7 @@ import java.util.Map;
  * @since 2017/2/23 下午1:39
  */
 class Warehouse {
+    // 分三种存
     // Cache route and metas
     static Map<String, Class<? extends IRouteGroup>> groupsIndex = new HashMap<>();
     static Map<String, RouteMeta> routes = new HashMap<>();
