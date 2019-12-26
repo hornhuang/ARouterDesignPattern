@@ -17,8 +17,6 @@ patchPluginXml {
 }
 
 publishPlugin {
-    username intellijPublishUsername
-    password intellijPublishPassword
     channels "beta"
 }
 
